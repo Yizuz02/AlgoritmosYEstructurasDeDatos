@@ -6,6 +6,9 @@ void menu(PILA, PILA);
 void mostrarOpciones();
 void manejaMsg(int);
 PILA datosEntrada();
+PILA copiarFila(PILA);
+int elemFondo(PILA);
+int numElem(PILA);
 void mostrarPila(PILA);
 void liberarMem(PILA);
 
@@ -34,7 +37,8 @@ void menu(PILA P, PILA copyP){
 			printf("El elemento al fondo de la pila es %d\n",elemFondo(P));
             break;
         case 3:
-            copyP = copiarFila(P);
+			copyP = copiarFila(P);
+			printf("Se ha copiado correctamente la Pila\n");
             break;
         case 4:
             liberarMem(P);
@@ -58,12 +62,14 @@ void mostrarOpciones(){
 PILA datosEntrada(){
 	PILA P = crearPila();
 	int n, op=0;
+	char m;
 	printf("Ingrese los datos que desea agregar a la pila:\n");
 	while(1){
 		scanf("%d",&n);
-		if (n=='\n')
-			break;
 		apilar(P, n);
+		m = getchar();
+		if (m =='\n')
+			break;
 	}
 	return P;
 }
@@ -88,7 +94,7 @@ PILA copiarFila(PILA P){
 
 int elemFondo(PILA P){
 	PILA temp = crearPila();
-	int n, sum=0;
+	int n;
 	while(!es_vaciaPila(P)){
 		n = desapilar(P);
 		apilar(temp, n);
@@ -99,17 +105,17 @@ int elemFondo(PILA P){
 	return n;
 }
 
-int elemFondo(PILA P){
+int numElem(PILA P){
 	PILA temp = crearPila();
-	int n, sum=0;
+	int sum=0;
 	while(!es_vaciaPila(P)){
-		n = desapilar(P);
-		apilar(temp, n);
+		sum++;
+		apilar(temp, desapilar(P));
 	}
 	printf("\n");
 	while(!es_vaciaPila(temp))
 		apilar(P, desapilar(temp));
-	return n;
+	return sum;
 }
 
 void mostrarPila(PILA P){
