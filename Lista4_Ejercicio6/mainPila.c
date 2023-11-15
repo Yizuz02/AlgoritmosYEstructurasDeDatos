@@ -1,26 +1,24 @@
 #include<stdio.h>
 #include "pila.h"
 #include<stdlib.h>
+#include<string.h>
 
-void menu(PILA, PILA);
+void menu(PILA);
 void mostrarOpciones();
 void manejaMsg(int);
-PILA datosEntrada();
-PILA copiarFila(PILA);
-int elemFondo(PILA);
+void agregarElem(PILA);
+void elimElem(PILA);
 int numElem(PILA);
 void mostrarPila(PILA);
 void liberarMem(PILA);
 
 void main(){
-	PILA P, copyP;
-	P=datosEntrada();
-	menu(P, copyP);
-	mostrarPila(P);
-	liberarMem(P);
+	PILA P;
+	P = crearPila();
+	menu(P);
 }
 
-void menu(PILA P, PILA copyP){
+void menu(PILA P){
     int op;
     do{
         mostrarOpciones();
@@ -30,15 +28,17 @@ void menu(PILA P, PILA copyP){
         switch (op)
         {
         case 1:
-            printf("La pila tiene %d elementos\n",numElem(P));
+			if(numElem(P)<10)
+				agregarElem(P);
+			else
+				printf("Cesto lleno\n");
             break;
         
         case 2:
-			printf("El elemento al fondo de la pila es %d\n",elemFondo(P));
+			elimElem(P);
             break;
         case 3:
-			copyP = copiarFila(P);
-			printf("Se ha copiado correctamente la Pila\n");
+			mostrarPila(P);
             break;
         case 4:
             liberarMem(P);
@@ -52,57 +52,30 @@ void menu(PILA P, PILA copyP){
 }
 
 void mostrarOpciones(){
-    printf("\n\t\tMenu Pilas\n\n");
-    printf("1.- Numero de elementos\n");
-    printf("2.- Elemento del fondo\n");
-    printf("3.- Copiar Pila\n");
+    printf("\n\t\tCesta\n\n");
+    printf("1.- Introducir elemento a la cesta\n");
+    printf("2.- Sacar elemento de la cesta\n");
+    printf("3.- Imprimir elemento de la cesta\n");
     printf("4.- Salir\n\n");
 }
 
-PILA datosEntrada(){
-	PILA P = crearPila();
-	int n, op=0;
-	char m;
-	printf("Ingrese los datos que desea agregar a la pila:\n");
-	while(1){
-		scanf("%d",&n);
-		m = getchar();
-		if (m =='\n')
-			break;
-		apilar(P, n);
-	}
-	return P;
+void agregarElem(PILA P){
+	char n[25];
+	getchar();
+	printf("Ingrese el producto a agregar a la cesta:\n");
+	scanf("%[^\n]",&n);
+	printf("Se agrego %s al cesto\n",n);
+	apilar(P, n);
 }
 
-PILA copiarFila(PILA P){
-	PILA temp = crearPila();
-	PILA C = crearPila();
-	int n, sum=0;
-	while(!es_vaciaPila(P)){
-		n = desapilar(P);
-		sum++;
-		apilar(temp, n);
-	}
-	printf("\n");
-	while(!es_vaciaPila(temp)){
-		n= desapilar(temp);
-		apilar(P, n);
-		apilar(C, n);
-	}
-	return C;
-}
 
-int elemFondo(PILA P){
-	PILA temp = crearPila();
-	int n;
-	while(!es_vaciaPila(P)){
-		n = desapilar(P);
-		apilar(temp, n);
-	}
-	printf("\n");
-	while(!es_vaciaPila(temp))
-		apilar(P, desapilar(temp));
-	return n;
+void elimElem(PILA P){
+	char n[25];
+	if(!es_vaciaPila(P)){
+		strcpy(n, desapilar(P));
+		printf("Se elimino %s de la cesta\n", n);
+	} else
+		printf("El cesto esta vacio\n");
 }
 
 int numElem(PILA P){
@@ -120,13 +93,13 @@ int numElem(PILA P){
 
 void mostrarPila(PILA P){
 	PILA temp = crearPila();
-	int n;
+	char n[25];
+	printf("Cesto de Compras: \n");
 	while(!es_vaciaPila(P)){
-		n = desapilar(P);
-		printf("%c",n);
+		strcpy(n, desapilar(P));
+		printf("%s\n",n);
 		apilar(temp, n);
 	}
-	printf("\n");
 	while(!es_vaciaPila(temp))
 		apilar(P, desapilar(temp));
 }
