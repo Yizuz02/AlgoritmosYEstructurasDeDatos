@@ -16,14 +16,16 @@ void main(){
 
 COLA datosEntrada(){
 	COLA C = crearCola();
-	int n, op=0;
-	do{
-		printf("Ingrese el dato que desea agregar a la pila:\n");
+	int n;
+    char m;
+	while (1){
+		printf("Ingrese los dato que desea agregar a la pila (Enter para continuar)\n");
 		scanf("%d",&n);
+		m = getchar();
+		if (m =='\n')
+			break;
 		encolar(C, n);
-		printf("Desea ingresar otro dato? (1 = Si / 0 = No)\n");
-		scanf("%d",&op);
-	}while(op!=0);
+	}
 	return C;
 }
 
