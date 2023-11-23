@@ -50,6 +50,32 @@ COLA intercambio(COLA C1){
 	return C2;
 }
 
+COLA intercambio2(COLA C1){
+	COLA C2 = crearCola();
+	COLA temp = crearCola();
+	COLA temp2 = crearCola();
+	int n, p, m;
+	while(!es_vaciaCola(C1)){
+		n = desencolar(C1);
+		encolar(temp, n);
+		encolar(C2, n);
+	}
+	while(!es_vaciaCola(temp)){
+		m=desencolar(temp);
+		encolar(C1, m);
+		encolar(temp2, m);
+	}
+	p=desencolar(C2);
+	desencolar(temp2);
+	desencolar(temp2);
+	while(!es_vaciaCola(temp2)){
+		desencolar(temp2);
+		encolar(C2, desencolar(C2));
+	}
+	encolar(C2, p);
+	return C2;
+}
+
 void imprimir(COLA C1, COLA C2){
 	printf("Imprimiendo Cola Original: \n");
 	mostrarCola(C1);
